@@ -7,14 +7,14 @@ export const metadata = {
 
 export default function AuthRootLayout({ children }) {
   return (
-    <html lang="en">
+    <>
       <header id="auth-header">
         <p>Welcome back!</p>
         <form>
           <button>Logout</button>
         </form>
       </header>
-      <body>{children}</body>
-    </html>
+      {children}
+    </>
   );
 }
