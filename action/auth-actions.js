@@ -47,3 +47,30 @@ export async function signup(prevState, formData) {
     throw error;
   }
 }
+
+export async function login(prevState, formData) {
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const existingUser = getUserByEmail(email);
+
+  if (!existingUser) {
+    return {
+      errors: {
+        email: "No user found with this email address.",
+      },
+    };
+  }
+
+  const isValidPassword = verifyPassword(existingUser.password, password);
+  if (!isValidPassword) {
+    return {
+      errors: {
+        password: "Incorrect password. Please try again.",
+      },
+    };
+  }
+
+  await createAuthSession(existingUser.id);
+  redirect("/training");
+}
