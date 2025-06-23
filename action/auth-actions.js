@@ -26,9 +26,15 @@ export async function signup(prevState, formData) {
   }
 
   const hashedPassword = hashUserPassword(password);
+
   try {
-    createUser(email, hashedPassword);
-    await createAuthSession(id);
+    const userId = createUser(email, hashedPassword); // ✅ get ID directly
+
+    if (!userId) {
+      throw new Error("User creation failed. Please try again.");
+    }
+
+    await createAuthSession(userId); // ✅ use the ID returned from insert
     redirect("/training");
   } catch (error) {
     if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
